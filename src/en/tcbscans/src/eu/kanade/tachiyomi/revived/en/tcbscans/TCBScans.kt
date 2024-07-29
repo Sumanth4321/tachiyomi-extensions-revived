@@ -33,7 +33,7 @@ class TCBScans : ParsedHttpSource() {
 
     // popular
     override fun popularMangaRequest(page: Int): Request {
-        return GET("$baseUrl/manga")
+        return GET("$baseUrl/projects")
     }
 
     override fun popularMangaSelector() = ".bg-card.border.border-border.rounded.p-3.mb-3"
@@ -49,7 +49,11 @@ class TCBScans : ParsedHttpSource() {
     override fun popularMangaNextPageSelector(): String? = null
 
     override fun fetchMangaDetails(manga: SManga): Observable<SManga> {
-        return client.newCall(mangaDetailsRequest(manga))
+        val url = mangaDetailsRequest(manga)
+        val result = url.replace("/mangas/","")
+        val number = result.filter { it.isDigit() }
+        val result2 = result.replace(number,"")
+        return client.newCall(result2)
             .asObservable()
             .doOnNext { response ->
                 if (!response.isSuccessful) {
@@ -94,7 +98,7 @@ class TCBScans : ParsedHttpSource() {
         val headers = headersBuilder()
             .add("query", query)
             .build()
-        return GET("$baseUrl/manga", headers)
+        return GET("$baseUrl/projects", headers)
     }
 
     // manga details
