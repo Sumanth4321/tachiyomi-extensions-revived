@@ -33,7 +33,7 @@ class TCBScans : ParsedHttpSource() {
 
     // popular
     override fun popularMangaRequest(page: Int): Request {
-        return GET("$baseUrl/projects")
+        return GET("$baseUrl/manga")
     }
 
     override fun popularMangaSelector() = ".bg-card.border.border-border.rounded.p-3.mb-3"
@@ -94,7 +94,7 @@ class TCBScans : ParsedHttpSource() {
         val headers = headersBuilder()
             .add("query", query)
             .build()
-        return GET("$baseUrl/projects", headers)
+        return GET("$baseUrl/manga", headers)
     }
 
     // manga details
