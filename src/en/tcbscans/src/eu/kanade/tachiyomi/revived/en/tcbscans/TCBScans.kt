@@ -159,7 +159,14 @@ class TCBScans : ParsedHttpSource() {
     }
 
     override fun fetchPageList(chapter: SChapter): Observable<List<Page>> {
-        return client.newCall(pageListRequest(chapter))
+        val url = pageListRequest(chapter).toString()
+        val result = url.replace("/mangas/","")
+        val number = result.filter { it.isDigit() }
+        val result2 = result.replace(number,"")
+        val request = Request.Builder()
+                                .url(result2)
+                                .build()
+        return client.newCall(request)
             .asObservable()
             .doOnNext { response ->
                 if (!response.isSuccessful) {
