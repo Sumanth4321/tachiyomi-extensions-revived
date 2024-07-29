@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import android.widget.Toast
 
 class TCBScans : ParsedHttpSource() {
 
