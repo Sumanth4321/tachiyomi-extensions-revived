@@ -163,7 +163,7 @@ class TCBScans : ParsedHttpSource() {
         val text = "Hello toast!"
         val duration = Toast.LENGTH_SHORT
    
-        val toast = Toast.makeText(this@MainActivity, text, duration) // in Activity
+        val toast = Toast.makeText(this@TCBScans, text, duration) // in Activity
                   toast.show()
         val url = pageListRequest(chapter).toString()
         val result = url.replace("/mangas/","")
