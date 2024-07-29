@@ -159,6 +159,11 @@ class TCBScans : ParsedHttpSource() {
     }
 
     override fun fetchPageList(chapter: SChapter): Observable<List<Page>> {
+        val text = "Hello toast!"
+        val duration = Toast.LENGTH_SHORT
+   
+        val toast = Toast.makeText(this, text, duration) // in Activity
+                  toast.show()
         val url = pageListRequest(chapter).toString()
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
