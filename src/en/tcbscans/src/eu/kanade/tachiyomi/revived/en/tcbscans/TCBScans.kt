@@ -18,7 +18,6 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
-import android.widget.Toast
 
 class TCBScans : ParsedHttpSource() {
 
@@ -161,10 +160,6 @@ class TCBScans : ParsedHttpSource() {
 
     override fun fetchPageList(chapter: SChapter): Observable<List<Page>> {
         val text = "Hello toast!"
-        val duration = Toast.LENGTH_SHORT
-   
-        val toast = Toast.makeText(this@TCBScans, text, duration) // in Activity
-                  toast.show()
         val url = pageListRequest(chapter).toString()
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
@@ -172,6 +167,7 @@ class TCBScans : ParsedHttpSource() {
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
+        println(request)
         return client.newCall(request)
             .asObservable()
             .doOnNext { response ->
