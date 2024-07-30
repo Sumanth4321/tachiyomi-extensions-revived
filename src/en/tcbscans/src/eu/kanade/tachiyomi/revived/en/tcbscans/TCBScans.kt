@@ -49,7 +49,7 @@ class TCBScans : ParsedHttpSource() {
     override fun popularMangaNextPageSelector(): String? = null
 
     override fun fetchMangaDetails(manga: SManga): Observable<SManga> {
-        val url = mangaDetailsRequest(manga).toString()
+        val url = mangaDetailsRequest(manga).url.toString()
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
@@ -163,7 +163,7 @@ class TCBScans : ParsedHttpSource() {
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
-        throw Exception("Url: "+ result2)
+        //throw Exception("Url: "+ result2)
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
