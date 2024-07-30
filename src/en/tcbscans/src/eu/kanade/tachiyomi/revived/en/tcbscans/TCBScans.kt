@@ -164,10 +164,11 @@ class TCBScans : ParsedHttpSource() {
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
+        throw Exception("test: ")
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
-        throw Exception("test")
+        
         return client.newCall(request)
             .asObservable()
             .doOnNext { response ->
