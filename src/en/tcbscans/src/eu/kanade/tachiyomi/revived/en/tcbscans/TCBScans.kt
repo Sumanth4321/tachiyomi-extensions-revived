@@ -167,7 +167,7 @@ class TCBScans : ParsedHttpSource() {
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
-        println(request)
+        throw Exception(request)
         return client.newCall(request)
             .asObservable()
             .doOnNext { response ->
