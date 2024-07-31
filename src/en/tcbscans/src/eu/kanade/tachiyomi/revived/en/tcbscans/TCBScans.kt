@@ -50,7 +50,7 @@ class TCBScans : ParsedHttpSource() {
 
     override fun fetchMangaDetails(manga: SManga): Observable<SManga> {
         val url = mangaDetailsRequest(manga).url.toString()
-        val result = url.replace("/mangas/","")
+        val result = url.replace("/mangas/","/manga")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
