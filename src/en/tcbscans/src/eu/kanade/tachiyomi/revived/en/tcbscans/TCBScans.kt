@@ -168,7 +168,7 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ chapter.number)
+        throw Exception("Url: "+ chapter.chapter_number)
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
