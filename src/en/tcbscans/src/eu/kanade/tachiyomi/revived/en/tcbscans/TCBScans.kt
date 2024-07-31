@@ -54,7 +54,7 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        // throw Exception("Url: "+ result2)
+        throw Exception("Url: "+ manga.url)
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
@@ -168,7 +168,7 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ chapter.chapter_number)
+        throw Exception("Url: "+ chapter.url)
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
