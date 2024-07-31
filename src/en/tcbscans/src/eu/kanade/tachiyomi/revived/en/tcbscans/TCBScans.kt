@@ -53,6 +53,10 @@ class TCBScans : ParsedHttpSource() {
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
+        try{
+            throw Exception("Url: "+ url)
+        } catch(e: Exception) {
+        }
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
@@ -163,7 +167,10 @@ class TCBScans : ParsedHttpSource() {
         val result = url.replace("/mangas/","")
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
-        //throw Exception("Url: "+ result2)
+        try{
+            throw Exception("Url: "+ chapter.toString())
+        } catch(e: Exception) {
+        }
         val request = Request.Builder()
                                 .url(result2)
                                 .build()
