@@ -169,7 +169,7 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ baseUrl+"/manga/"+globalMangaName+"/chapter-"+chapter.chapter_number)
+        throw Exception("Url: "+ baseUrl+"/manga/"+globalMangaName.replace(" ","-")+"/chapter-"+chapter.chapter_number.toInt().toString())
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
