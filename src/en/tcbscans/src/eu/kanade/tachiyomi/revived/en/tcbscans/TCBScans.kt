@@ -20,7 +20,7 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
 class TCBScans : ParsedHttpSource() {
-
+    var globalMangaName = ""
     override val name = "TCB Scans"
     override val baseUrl = "https://tcbscans-manga.com"
     override val lang = "en"
@@ -49,6 +49,7 @@ class TCBScans : ParsedHttpSource() {
     override fun popularMangaNextPageSelector(): String? = null
 
     override fun fetchMangaDetails(manga: SManga): Observable<SManga> {
+        globalMangaName = manga.title
         val url = mangaDetailsRequest(manga).url.toString()
         val result = url.replace("/mangas/","/manga")
         val number = result.filter { it.isDigit() }
@@ -168,7 +169,7 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ chapter.name)
+        throw Exception("Url: "+ baseUrl+"/manga/"+globalMangaName+"/chapter-"+chapter.chapter_number)
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
