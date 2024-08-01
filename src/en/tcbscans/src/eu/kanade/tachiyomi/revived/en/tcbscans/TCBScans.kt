@@ -192,7 +192,7 @@ class TCBScans : ParsedHttpSource() {
     }
 
     override fun pageListParse(document: Document): List<Page> {
-         throw Exception(document.toString())
+         throw Exception("============"+document.select(".flex.flex-col.items-center.justify-center picture img"))
         return document.select(".flex.flex-col.items-center.justify-center picture img")
             .mapIndexed { i, el -> Page(i, "", el.attr("src")) }
     }
