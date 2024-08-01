@@ -186,7 +186,8 @@ class TCBScans : ParsedHttpSource() {
                 }
             }
             .map { response ->
-                pageListParse(response)
+                 throw Exception(response.body)
+                // pageListParse(response)
             }
     }
 
