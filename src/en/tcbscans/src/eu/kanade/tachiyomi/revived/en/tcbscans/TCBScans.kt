@@ -168,12 +168,11 @@ class TCBScans : ParsedHttpSource() {
         // val result = url.replace("/mangas/","")
         // val number = result.filter { it.isDigit() }
         // val result2 = result.replace(number,"")
-        // try{
+
         val url = baseUrl+"/manga/"+globalMangaName.replace(" ","-")+"/chapter-"+chapter.chapter_number.toInt().toString()
-        // } catch(e: Exception) {
-        // }
         val request = Request.Builder()
                                 .url(url)
+                                .header(pageListRequest(chapter).headers)
                                 .build()
         
         return client.newCall(request)
