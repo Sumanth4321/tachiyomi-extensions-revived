@@ -55,12 +55,13 @@ class TCBScans : ParsedHttpSource() {
         val number = result.filter { it.isDigit() }
         val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ manga.url)
+        // throw Exception("Url: "+ manga.url)
         // } catch(e: Exception) {
         // }
-        val request = Request.Builder()
-                                .url(result2)
-                                .build()
+        // val request = Request.Builder()
+        //                         .url(result2)
+        //                         .build()
+        val request = GET(result2, headers)
         return client.newCall(request)
             .asObservable()
             .doOnNext { response ->
