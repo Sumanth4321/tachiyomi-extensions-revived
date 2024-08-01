@@ -164,16 +164,16 @@ class TCBScans : ParsedHttpSource() {
     }
 
     override fun fetchPageList(chapter: SChapter): Observable<List<Page>> {
-        val url = pageListRequest(chapter).url.toString()
-        val result = url.replace("/mangas/","")
-        val number = result.filter { it.isDigit() }
-        val result2 = result.replace(number,"")
+        // val url = pageListRequest(chapter).url.toString()
+        // val result = url.replace("/mangas/","")
+        // val number = result.filter { it.isDigit() }
+        // val result2 = result.replace(number,"")
         // try{
-        throw Exception("Url: "+ baseUrl+"/manga/"+globalMangaName.replace(" ","-")+"/chapter-"+chapter.chapter_number.toInt().toString())
+        val url = baseUrl+"/manga/"+globalMangaName.replace(" ","-")+"/chapter-"+chapter.chapter_number.toInt().toString())
         // } catch(e: Exception) {
         // }
         val request = Request.Builder()
-                                .url(result2)
+                                .url(url)
                                 .build()
         
         return client.newCall(request)
