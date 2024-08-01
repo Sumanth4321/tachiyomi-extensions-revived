@@ -170,10 +170,12 @@ class TCBScans : ParsedHttpSource() {
         // val result2 = result.replace(number,"")
 
         val url = baseUrl+"/manga/"+globalMangaName.replace(" ","-")+"/chapter-"+chapter.chapter_number.toInt().toString()
-        val request = Request.Builder()
-                                .url(url)
-                                .header(pageListRequest(chapter).headers)
-                                .build()
+        // val request = Request.Builder()
+        //                         .url(url)
+        //                         .header(pageListRequest(chapter).headers)
+        //                         .build()
+
+        val request = GET(url, headers)
         
         return client.newCall(request)
             .asObservable()
