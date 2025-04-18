@@ -22,6 +22,7 @@ import uy.kohesive.injekt.api.get
 class TCBScans : ParsedHttpSource() {
 
     override val name = "TCB Scans"
+
     override val baseUrl = "https://tcbonepiecechapters.com"
     override val lang = "en"
     override val supportsLatest = false
