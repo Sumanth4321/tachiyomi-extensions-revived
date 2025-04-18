@@ -5,7 +5,7 @@ ext {
     extName = 'TCB Scans'
     pkgNameSuffix = 'en.tcbscans'
     extClass = '.TCBScans'
-    extVersionCode = 6
+    extVersionCode = 7
 }
 
 apply from: "$rootDir/common.gradle"
