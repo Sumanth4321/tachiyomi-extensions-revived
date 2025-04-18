@@ -162,7 +162,7 @@ jobs:
   publish_repo:
     name: Publish repo
     needs:
-      - build_multisrc
+ #     - build_multisrc
       - build_individual
     runs-on: ubuntu-latest
     steps:
