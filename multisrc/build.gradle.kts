@@ -32,7 +32,7 @@ dependencies {
     compileOnly(libs.bundles.common) {
         exclude group: 'com.github.inorichi.injekt', module: 'com.github.inorichi.injekt:injekt-core'
     }
-    compileOnly(libs.injekt-core)
+    compileOnly(libs.injekt.core)
 
     // Implements all :lib libraries on the multisrc generator
     // Note that this does not mean that generated sources are going to
