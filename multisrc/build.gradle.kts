@@ -30,7 +30,7 @@ configurations {
 
 dependencies {
     compileOnly(libs.bundles.common) {
-        exclude group: 'com.github.inorichi.injekt', module: 'com.github.inorichi.injekt:injekt-core'
+        exclude(group = "com.github.inorichi.injekt", module = "injekt-core")
     }
     compileOnly(libs.injekt.core)
 
