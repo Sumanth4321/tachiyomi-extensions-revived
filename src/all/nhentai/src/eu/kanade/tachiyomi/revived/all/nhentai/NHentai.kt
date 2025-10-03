@@ -255,17 +255,17 @@ open class NHentai(
         // val script = document.select("script:containsData(media_server)").first()!!.data()
         // println(document.select("script")[4])
         try{
-            val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
-        }catch(e: Exception){
-            println(document.select("script")[4])
-            println(e)
-        }
+        val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
         // println(script)
         // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
         return document.select("div.thumbs a > img").mapIndexed { i, img ->
             Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
+        }
+        }catch(e: Exception){
+            println(document.select("script")[4])
+            println(e)
         }
     }
 
