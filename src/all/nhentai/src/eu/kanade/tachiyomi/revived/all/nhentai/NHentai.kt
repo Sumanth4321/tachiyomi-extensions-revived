@@ -260,12 +260,15 @@ open class NHentai(
         // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
-        return document.select("div.thumbs a > img").mapIndexed { i, img ->
-            Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
-        }
         }catch(e: Exception){
             println(document.select("script")[4])
             println(e)
+        }
+
+         // return document.select("div.thumbs a > img").mapIndexed { i, img ->
+         //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
+          return document.select("div.thumbs a > img").mapIndexed { i, img ->
+            Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t.", "."))
         }
     }
 
