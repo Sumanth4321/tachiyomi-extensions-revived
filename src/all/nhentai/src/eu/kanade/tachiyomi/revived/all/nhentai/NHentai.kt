@@ -254,6 +254,7 @@ open class NHentai(
     override fun pageListParse(document: Document): List<Page> {
         // val script = document.select("script:containsData(media_server)").first()!!.data()
         // println(document.select("script")[4])
+        throw UnsupportedOperationException(document.select("script")[4].data())
         try{
         val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
         // println(script)
