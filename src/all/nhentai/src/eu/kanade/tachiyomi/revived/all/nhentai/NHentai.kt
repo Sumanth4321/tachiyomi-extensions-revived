@@ -256,7 +256,7 @@ open class NHentai(
         // println(document.select("script")[4])
         try{
             val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
-        }catch(Exception e){
+        }catch(e: Exception){
             println(document.select("script")[4])
             println(e)
         }
