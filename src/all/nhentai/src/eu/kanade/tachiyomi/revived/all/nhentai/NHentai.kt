@@ -252,6 +252,7 @@ open class NHentai(
     override fun chapterListSelector() = throw UnsupportedOperationException("Not used")
 
     override fun pageListParse(document: Document): List<Page> {
+        val cdnParsed = ""
         // val script = document.select("script:containsData(media_server)").first()!!.data()
         // println(document.select("script")[4])
         // throw UnsupportedOperationException(document.select("script")[4].data())
@@ -264,11 +265,22 @@ open class NHentai(
         }catch(e: Exception){
             // throw Exception(document.select("script")[4].data())
         }
-
+        val scripts = document.select("script")
+        for script in scripts{
+            // if(script.data().contains("image_cdn_urls"){
+            //     val cdn = script.data().substring(script.data().indexOf("image_cdn_urls"))
+            // }
+            val x = script.data()
+            if(x.indexOf("image_cdn_urls")>=0){
+        	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
+                cdnParsed = cdn.substring(2)
+            // println(cdnParsed)
+    	    }
+        }
          // return document.select("div.thumbs a > img").mapIndexed { i, img ->
          //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
           return document.select("div.thumbs a > img").mapIndexed { i, img ->
-            Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+document.select("script")[4].data())
+            Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
         }
     }
 
