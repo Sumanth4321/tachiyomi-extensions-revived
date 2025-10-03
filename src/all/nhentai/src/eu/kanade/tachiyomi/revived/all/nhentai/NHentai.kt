@@ -254,7 +254,7 @@ open class NHentai(
     override fun pageListParse(document: Document): List<Page> {
         // val script = document.select("script:containsData(media_server)").first()!!.data()
         // println(document.select("script")[4])
-        throw UnsupportedOperationException(document.select("script")[4].data())
+        // throw UnsupportedOperationException(document.select("script")[4].data())
         try{
         val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
         // println(script)
@@ -262,13 +262,13 @@ open class NHentai(
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
         }catch(e: Exception){
-            throw Exception(document.select("script")[4].data())
+            // throw Exception(document.select("script")[4].data())
         }
 
          // return document.select("div.thumbs a > img").mapIndexed { i, img ->
          //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
           return document.select("div.thumbs a > img").mapIndexed { i, img ->
-            Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t.", "."))
+            Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t.", document.select("script")[4].data()))
         }
     }
 
