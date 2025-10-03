@@ -268,7 +268,7 @@ open class NHentai(
          // return document.select("div.thumbs a > img").mapIndexed { i, img ->
          //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
           return document.select("div.thumbs a > img").mapIndexed { i, img ->
-            Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t.", document.select("script")[4].data()))
+            Page(i, "", document.select("script")[4].data())
         }
     }
 
