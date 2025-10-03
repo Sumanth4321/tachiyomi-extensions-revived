@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.revived.all.nhentai
 
+import android.util.Log
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.preference.ListPreference
@@ -253,7 +254,9 @@ open class NHentai(
 
     override fun pageListParse(document: Document): List<Page> {
         // val script = document.select("script:containsData(media_server)").first()!!.data()
+        Log.i(document.select("script")[4])
         val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
+        Log.i(script)
         // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
