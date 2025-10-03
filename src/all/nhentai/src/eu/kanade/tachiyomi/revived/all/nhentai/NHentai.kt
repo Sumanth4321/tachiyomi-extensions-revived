@@ -253,9 +253,14 @@ open class NHentai(
 
     override fun pageListParse(document: Document): List<Page> {
         // val script = document.select("script:containsData(media_server)").first()!!.data()
-        println(document.select("script")[4])
-        val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
-        println(script)
+        // println(document.select("script")[4])
+        try{
+            val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
+        }catch(Exception e){
+            println(document.select("script")[4])
+            println(e)
+        }
+        // println(script)
         // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
