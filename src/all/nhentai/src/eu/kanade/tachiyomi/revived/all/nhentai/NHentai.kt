@@ -266,7 +266,7 @@ open class NHentai(
             // throw Exception(document.select("script")[4].data())
         }
         val scripts = document.select("script")
-        for script in scripts{
+        for (script in scripts){
             // if(script.data().contains("image_cdn_urls"){
             //     val cdn = script.data().substring(script.data().indexOf("image_cdn_urls"))
             // }
