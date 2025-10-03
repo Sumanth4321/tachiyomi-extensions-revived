@@ -261,8 +261,7 @@ open class NHentai(
         val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
 
         }catch(e: Exception){
-            println(document.select("script")[4])
-            println(e)
+            throw Exception(document.select("script")[4])
         }
 
          // return document.select("div.thumbs a > img").mapIndexed { i, img ->
