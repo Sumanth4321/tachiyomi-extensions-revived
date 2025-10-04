@@ -104,7 +104,7 @@ open class NHentai(
             if (displayFullTitle) it.trim() else it.shortenTitle()
         }
         thumbnail_url = element.select(".cover img").first()!!.let { img ->
-            if (img.hasAttr("data-src")) img.attr("abs:data-src") else img.attr("abs:src")
+            if (img.hasAttr("data-src")) img.attr("data-src") else img.attr("src")
         }
     }
 
