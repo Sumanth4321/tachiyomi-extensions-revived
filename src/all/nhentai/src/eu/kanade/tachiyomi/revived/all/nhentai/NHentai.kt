@@ -253,23 +253,19 @@ open class NHentai(
 
     override fun pageListParse(document: Document): List<Page> {
         var cdnParsed = ""
-        // val script = document.select("script:containsData(media_server)").first()!!.data()
+        // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
         // println(document.select("script")[4])
         // throw UnsupportedOperationException(document.select("script")[4].data())
-        try{
-        val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
+        // try{
+        // val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
         // println(script)
-        // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]
-        val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
-
-        }catch(e: Exception){
+        // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]   Original
+        // val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
+        // }catch(e: Exception){
             // throw Exception(document.select("script")[4].data())
-        }
+        // }
         val scripts = document.select("script")
         for (script in scripts){
-            // if(script.data().contains("image_cdn_urls"){
-            //     val cdn = script.data().substring(script.data().indexOf("image_cdn_urls"))
-            // }
             val x = script.data()
             if(x.indexOf("image_cdn_urls")>=0){
         	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
@@ -277,10 +273,17 @@ open class NHentai(
             // println(cdnParsed)
     	    }
         }
-         // return document.select("div.thumbs a > img").mapIndexed { i, img ->
-         //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))
-          return document.select("div.thumbs a > img").mapIndexed { i, img ->
-            Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
+        // return document.select("div.thumbs a > img").mapIndexed { i, img ->    Original
+        //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))   Original
+        // return document.select("div.thumbs a > img").mapIndexed { i, img ->
+        //   Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
+        return document.select("div.thumbs a > img").mapIndexed { i, img ->
+                 val rawUrl = img.attr("data-src")
+                      .replace("t.nh", "i.nh")
+                      .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
+                      .replace("t.", ".")
+                 val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
+                 Page(i, "", cleanedUrl)  
         }
     }
 
