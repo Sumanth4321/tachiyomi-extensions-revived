@@ -38,6 +38,11 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonParser
 
 open class NHentai(
     override val lang: String,
@@ -258,8 +263,39 @@ open class NHentai(
     override fun pageListParse(document: Document): List<Page> {
         val cdn_url = API_URL+"/cdn"
         val gallery_url = baseUrl+document.select("script")[1].attr("data-url").split("?").first()
-        println(cdn_url)
-        println(gallery_url)
+        val cdn_request = Request.Builder()
+            .url(cdn_url)
+            .build()
+        val client = OkHttpClient()
+        val rateLimiter = Semaphore(4)
+        val request = Request.Builder()
+            .url(url)
+            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+            .build()
+        rateLimiter.acquire()
+        try {
+            var cdn_urls: JsonArray? = null
+            client.newCall(cdn_request).execute().use { response ->
+                if (!response.isSuccessful) throw Exception("Unexpected code $response")
+                    val cdnJson = response.body?.string() ?: ""
+                    val root = JsonParser.parseString(cdnJson).asJsonObject
+    
+                    // Direct access
+                    // val name = root.getAsJsonObject("user").get("name").asString 
+    
+                    // Iterating over an array
+                    cdn_urls = root.getAsJsonArray("image_servers")
+                    val image_cdn_url = cdn_urls!![0]
+                    println(image_cdn_url)
+            }
+        } finally {
+            // Release after 250ms to allow max 4 req/sec
+            Thread {
+                Thread.sleep(250)
+                rateLimiter.release()
+            }.start()
+        }
+        
         var cdnParsed = ""
         // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
         // println(document.select("script")[4])
@@ -291,7 +327,7 @@ open class NHentai(
                       .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
                       .replace("t.", ".")
                  val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
-                 Page(i, "", "https:"+gallery_url+cdn_url)  
+                 Page(i, "", "https:"+image_cdn_url+cdn_url+gallery_url)  
         }
  
     }
