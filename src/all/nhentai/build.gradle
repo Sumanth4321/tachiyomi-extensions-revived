@@ -5,7 +5,7 @@ ext {
     extName = 'NHentai'
     pkgNameSuffix = 'all.nhentai'
     extClass = '.NHFactory'
-    extVersionCode = 53
+    extVersionCode = 54
     isNsfw = true
 }
 
