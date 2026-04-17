@@ -36,12 +36,6 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
-import java.util.concurrent.Semaphore
-import java.util.concurrent.TimeUnit
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
 
 open class NHentai(
     override val lang: String,
@@ -260,95 +254,44 @@ open class NHentai(
     override fun chapterListSelector() = throw UnsupportedOperationException("Not used")
 
     override fun pageListParse(document: Document): List<Page> {
-        // var cdnParsed = ""
-        // // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
-        // // println(document.select("script")[4])
-        // // throw UnsupportedOperationException(document.select("script")[4].data())
-        // // try{
-        // // val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
-        // // println(script)
-        // // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]   Original
-        // // val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
-        // // }catch(e: Exception){
-        //     // throw Exception(document.select("script")[4].data())
-        // // }
-        // val scripts = document.select("script")
-        // for (script in scripts){
-        //     val x = script.data()
-        //     if(x.indexOf("image_cdn_urls")>=0){
-        // 	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
-        //         cdnParsed = cdn.substring(2)
-        //     // println(cdnParsed)
-    	   //  }
-        // }
-        // // return document.select("div.thumbs a > img").mapIndexed { i, img ->    Original
-        // //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))   Original
-        // // return document.select("div.thumbs a > img").mapIndexed { i, img ->
-        // //   Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
-        // return document.select("div.thumbs a > img").mapIndexed { i, img ->
-        //          val rawUrl = img.attr("data-src")
-        //               .replace("t.nh", "i.nh")
-        //               .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
-        //               .replace("t.", ".")
-        //          val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
-        //          Page(i, "", "https:"+cleanedUrl)  
-        // }
-
         val cdn_url = API_URL+"/cdn"
         val gallery_url = baseUrl+document.select("script")[1].attr("data-url").split("?").first()
         println(cdn_url)
         println(gallery_url)
-        
-        val cdn_request = Request.Builder()
-            .url(cdn_url)
-            .build()
-        val client = OkHttpClient()
-        val rateLimiter = Semaphore(4)
-        val request = Request.Builder()
-            .url(gallery_url)
-            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-            .build()
-        rateLimiter.acquire()
-        try {
-            var cdn_urls: JsonArray? = null
-            client.newCall(cdn_request).execute().use { response ->
-                if (!response.isSuccessful) throw Exception("Unexpected code $response")
-                    val cdnJson = response.body?.string() ?: ""
-                    val root = JsonParser.parseString(cdnJson).asJsonObject
-    
-                    // Direct access
-                    // val name = root.getAsJsonObject("user").get("name").asString 
-    
-                    // Iterating over an array
-                    cdn_urls = root.getAsJsonArray("image_servers")
-                    val image_cdn_url = cdn_urls!![0]
-                    println(image_cdn_url)
-            }
-    
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw Exception("Unexpected code $response")
-                val galleryJson = response.body?.string() ?: ""
-                val root = JsonParser.parseString(galleryJson).asJsonObject
-                val pages = root.getAsJsonArray("pages")
-                val pagesList = mutableListOf<Page>()
-                for (page in pages) {
-                    val pageObj = page.asJsonObject
-                    val index = pageObj.get("number").asInt
-                    val path = pageObj.get("path").asString
-                    pagesList.add(Page(index, "", cdn_urls!![1].asString + "/"+path))
-                }
-                println(pagesList)
-                // val doc = Jsoup.parse(html)
-                // println(pageListParse(doc))
-            }
-            return pagesList
-        } finally {
-            // Release after 250ms to allow max 4 req/sec
-            Thread {
-                Thread.sleep(250)
-                rateLimiter.release()
-            }.start()
+        var cdnParsed = ""
+        // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
+        // println(document.select("script")[4])
+        // throw UnsupportedOperationException(document.select("script")[4].data())
+        // try{
+        // val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
+        // println(script)
+        // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]   Original
+        // val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
+        // }catch(e: Exception){
+            // throw Exception(document.select("script")[4].data())
+        // }
+        val scripts = document.select("script")
+        for (script in scripts){
+            val x = script.data()
+            if(x.indexOf("image_cdn_urls")>=0){
+        	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
+                cdnParsed = cdn.substring(2)
+            // println(cdnParsed)
+    	    }
         }
+        // return document.select("div.thumbs a > img").mapIndexed { i, img ->    Original
+        //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))   Original
+        // return document.select("div.thumbs a > img").mapIndexed { i, img ->
+        //   Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
+        return document.select("div.thumbs a > img").mapIndexed { i, img ->
+                 val rawUrl = img.attr("data-src")
+                      .replace("t.nh", "i.nh")
+                      .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
+                      .replace("t.", ".")
+                 val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
+                 Page(i, "", "https:"+cleanedUrl)  
+        }
+ 
     }
 
     override fun getFilterList(): FilterList = FilterList(
