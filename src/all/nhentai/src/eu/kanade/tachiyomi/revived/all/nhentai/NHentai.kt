@@ -36,6 +36,12 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 
 open class NHentai(
     override val lang: String,
