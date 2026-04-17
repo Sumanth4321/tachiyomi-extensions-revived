@@ -5234,10 +5234,10 @@
   {
     "name": "Tachiyomi: NHentai",
     "pkg": "eu.kanade.tachiyomi.revived.all.nhentai",
-    "apk": "tachiyomi-all.nhentai-revived-v1.4.51.apk",
+    "apk": "tachiyomi-all.nhentai-revived-v1.4.52.apk",
     "lang": "all",
-    "code": 51,
-    "version": "1.4.51",
+    "code": 52,
+    "version": "1.4.52",
     "nsfw": 1,
     "hasReadme": 0,
     "hasChangelog": 0,
@@ -24657,7 +24657,7 @@
         "name": "ManaToki",
         "lang": "ko",
         "id": "2526381983439079467",
-        "baseUrl": "https://manatoki468.net",
+        "baseUrl": "https://manatoki469.net",
         "versionId": 1,
         "hasCloudflare": 1
       },
@@ -24665,7 +24665,7 @@
         "name": "NewToki",
         "lang": "ko",
         "id": "1977818283770282459",
-        "baseUrl": "https://newtoki468.com",
+        "baseUrl": "https://newtoki469.com",
         "versionId": 1,
         "hasCloudflare": 1
       }
@@ -29621,7 +29621,7 @@
         "name": "zero搬运网",
         "lang": "zh",
         "id": "8743284448117690086",
-        "baseUrl": "http://www.zerobywa.com",
+        "baseUrl": "http://www.zerobywai.com",
         "versionId": 1,
         "hasCloudflare": 1
       }
