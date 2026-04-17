@@ -30,4 +30,4 @@ quickjs = { module = "app.cash.quickjs:quickjs-android", version = "0.9.2" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson_version" }
 
 [bundles]
-common = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "injekt-core", "rxjava", "kotlin-protobuf", "kotlin-json", "jsoup", "okhttp", "tachiyomi-lib", "quickjs", "gson"]
+common = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "injekt-core", "rxjava", "kotlin-protobuf", "kotlin-json", "jsoup", "okhttp", "tachiyomi-lib", "quickjs"]
