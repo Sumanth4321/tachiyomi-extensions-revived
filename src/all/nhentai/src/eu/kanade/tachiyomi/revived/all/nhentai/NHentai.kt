@@ -269,7 +269,7 @@ open class NHentai(
         val client = OkHttpClient()
         val rateLimiter = Semaphore(4)
         val request = Request.Builder()
-            .url(url)
+            .url(gallery_url)
             .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
             .build()
         rateLimiter.acquire()
