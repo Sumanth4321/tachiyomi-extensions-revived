@@ -261,7 +261,7 @@ open class NHentai(
     override fun chapterListSelector() = throw UnsupportedOperationException("Not used")
 
     override fun pageListParse(document: Document): List<Page> {
-        val image_cdn_url = ""
+        val image_cdn_url: JsonElement
         val cdn_url = API_URL+"/cdn"
         val gallery_url = baseUrl+document.select("script")[1].attr("data-url").split("?").first()
         val cdn_request = Request.Builder()
