@@ -261,6 +261,7 @@ open class NHentai(
     override fun chapterListSelector() = throw UnsupportedOperationException("Not used")
 
     override fun pageListParse(document: Document): List<Page> {
+        val image_cdn_url = ""
         val cdn_url = API_URL+"/cdn"
         val gallery_url = baseUrl+document.select("script")[1].attr("data-url").split("?").first()
         val cdn_request = Request.Builder()
@@ -285,8 +286,7 @@ open class NHentai(
     
                     // Iterating over an array
                     cdn_urls = root.getAsJsonArray("image_servers")
-                    val image_cdn_url = cdn_urls!![0]
-                    println(image_cdn_url)
+                    image_cdn_url = cdn_urls!![0]
             }
         } finally {
             // Release after 250ms to allow max 4 req/sec
