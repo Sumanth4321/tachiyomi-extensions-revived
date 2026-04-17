@@ -36,6 +36,8 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import com.google.gson.Gson
+import com.google.gson.JsonElement
 
 open class NHentai(
     override val lang: String,
@@ -353,6 +355,22 @@ open class NHentai(
         const val PREFIX_ID_SEARCH = "id:"
         private const val TITLE_PREF = "Display manga title as:"
     }
-
+    
+    private fun <T> fetchAndPrettyPrintJson(url: String, clazz: Class<T>): String {
+    return try {
+        val response = client.newCall(GET(url, headers)).execute()
+        if (response.isSuccessful) {
+            response.body?.string()?.let { jsonString ->
+                val gson = Gson()
+                val jsonObject = gson.fromJson(jsonString, JsonElement::class.java)
+                gson.newBuilder().setPrettyPrinting().create().toJson(jsonObject)
+            } ?: "Empty response body"
+        } else {
+            "Error: ${response.code} - ${response.message}"
+        }
+    } catch (e: Exception) {
+        "Exception: ${e.message}"
+    }
+}
     
 }
