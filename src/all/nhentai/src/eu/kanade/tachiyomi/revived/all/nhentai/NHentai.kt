@@ -261,6 +261,7 @@ open class NHentai(
     override fun chapterListSelector() = throw UnsupportedOperationException("Not used")
 
     override fun pageListParse(document: Document): List<Page> {
+        // API Impl
         val image_cdn_url: JsonElement
         val cdn_url = API_URL+"/cdn"
         val gallery_url = baseUrl+document.select("script")[1].attr("data-url").split("?").first()
@@ -288,6 +289,20 @@ open class NHentai(
                     cdn_urls = root.getAsJsonArray("image_servers")
                     image_cdn_url = cdn_urls!![0]
             }
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw Exception("Unexpected code $response")
+                val galleryJson = response.body?.string() ?: ""
+                val root = JsonParser.parseString(galleryJson).asJsonObject
+                val pages = root.getAsJsonArray("pages")
+                val pagesList = mutableListOf<Page>()
+                for (page in pages) {
+                    val pageObj = page.asJsonObject
+                    val index = pageObj.get("number").asInt
+                    val path = pageObj.get("path").asString
+                    pagesList.add(Page(index, "", cdn_urls!![1].asString + "/"+path))
+                }
+                return pagesList
+            }
         } finally {
             // Release after 250ms to allow max 4 req/sec
             Thread {
@@ -295,40 +310,40 @@ open class NHentai(
                 rateLimiter.release()
             }.start()
         }
-        
-        var cdnParsed = ""
-        // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
-        // println(document.select("script")[4])
-        // throw UnsupportedOperationException(document.select("script")[4].data())
-        // try{
-        // val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
-        // println(script)
-        // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]   Original
-        // val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
-        // }catch(e: Exception){
-            // throw Exception(document.select("script")[4].data())
+        // Legacy + modified Impl
+        // var cdnParsed = ""
+        // // val script = document.select("script:containsData(media_server)").first()!!.data()   Original
+        // // println(document.select("script")[4])
+        // // throw UnsupportedOperationException(document.select("script")[4].data())
+        // // try{
+        // // val script = document.select("script:containsData(image_cdn_urls)").first()!!.data()
+        // // println(script)
+        // // val mediaServer = Regex("""media_server\s*:\s*(\d+)""").find(script)?.groupValues!![1]   Original
+        // // val mediaServer = Regex("""image_cdn_urls\s*:\s*(\d+)""").find(script)?.groupValues!![1]
+        // // }catch(e: Exception){
+        //     // throw Exception(document.select("script")[4].data())
+        // // }
+        // val scripts = document.select("script")
+        // for (script in scripts){
+        //     val x = script.data()
+        //     if(x.indexOf("image_cdn_urls")>=0){
+        // 	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
+        //         cdnParsed = cdn.substring(2)
+        //     // println(cdnParsed)
+    	   //  }
         // }
-        val scripts = document.select("script")
-        for (script in scripts){
-            val x = script.data()
-            if(x.indexOf("image_cdn_urls")>=0){
-        	    val cdn = x.substring(x.indexOf("image_cdn_urls"),x.length).split("\",")[1]
-                cdnParsed = cdn.substring(2)
-            // println(cdnParsed)
-    	    }
-        }
-        // return document.select("div.thumbs a > img").mapIndexed { i, img ->    Original
-        //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))   Original
+        // // return document.select("div.thumbs a > img").mapIndexed { i, img ->    Original
+        // //    Page(i, "", img.attr("abs:data-src").replace("t.nh", "i.nh").replace("t\\d+.nh".toRegex(), "i$mediaServer.nh").replace("t.", "."))   Original
+        // // return document.select("div.thumbs a > img").mapIndexed { i, img ->
+        // //   Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
         // return document.select("div.thumbs a > img").mapIndexed { i, img ->
-        //   Page(i, "", "https://t4.nhentai.net/galleries/3564900/5.webp?test="+cdnParsed)
-        return document.select("div.thumbs a > img").mapIndexed { i, img ->
-                 val rawUrl = img.attr("data-src")
-                      .replace("t.nh", "i.nh")
-                      .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
-                      .replace("t.", ".")
-                 val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
-                 Page(i, "", "https://image_cdn_url:"+image_cdn_url+",cdn_url:"+cdn_url+",gallery_url:"+gallery_url)  
-        }
+        //          val rawUrl = img.attr("data-src")
+        //               .replace("t.nh", "i.nh")
+        //               .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
+        //               .replace("t.", ".")
+        //          val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
+        //          Page(i, "", "https://image_cdn_url:"+image_cdn_url+",cdn_url:"+cdn_url+",gallery_url:"+gallery_url)  
+        // }
  
     }
 
