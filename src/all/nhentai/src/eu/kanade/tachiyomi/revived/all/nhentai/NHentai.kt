@@ -327,7 +327,7 @@ open class NHentai(
                       .replace("t\\d+.nhentai.net".toRegex(), "$cdnParsed")
                       .replace("t.", ".")
                  val cleanedUrl = rawUrl.replace("(\\.[a-zA-Z0-9]+)\\1+$".toRegex(), "$1")
-                 Page(i, "", "https:"+image_cdn_url+cdn_url+gallery_url)  
+                 Page(i, "", "image_cdn_url:"+image_cdn_url+",cdn_url:"+cdn_url+",gallery_url:"+gallery_url)  
         }
  
     }
