@@ -5234,10 +5234,10 @@
   {
     "name": "Tachiyomi: NHentai",
     "pkg": "eu.kanade.tachiyomi.revived.all.nhentai",
-    "apk": "tachiyomi-all.nhentai-revived-v1.4.54.apk",
+    "apk": "tachiyomi-all.nhentai-revived-v1.4.55.apk",
     "lang": "all",
-    "code": 54,
-    "version": "1.4.54",
+    "code": 55,
+    "version": "1.4.55",
     "nsfw": 1,
     "hasReadme": 0,
     "hasChangelog": 0,
