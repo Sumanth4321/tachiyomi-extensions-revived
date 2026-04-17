@@ -11,7 +11,6 @@ ext {
 
 dependencies {
     implementation(project(":lib-randomua"))
-    implementation(libs.google.gson)
 }
 
 apply from: "$rootDir/common.gradle"
